@@ -1,16 +1,16 @@
 /* eslint-disable no-undef */
-import path from 'path'
-import moment from 'moment'
+import path from 'path';
+import moment from 'moment';
 
-import { createLogger, format, transports } from 'winston'
-import DailyRotateFile from 'winston-daily-rotate-file'
-const { combine, timestamp, label, printf } = format
+import { createLogger, format, transports } from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
+const { combine, timestamp, label, printf } = format;
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
-    const nowData: string = moment(timestamp).format('lll')
+    const nowData: string = moment(timestamp).format('lll');
 
-    return `${nowData} [${label}] ${level}: ${message}`
-})
+    return `${nowData} [${label}] ${level}: ${message}`;
+});
 
 export const logger = createLogger({
     level: 'info',
@@ -32,7 +32,7 @@ export const logger = createLogger({
             maxFiles: '14d',
         }),
     ],
-})
+});
 
 export const errorLogger = createLogger({
     level: 'error',
@@ -54,4 +54,4 @@ export const errorLogger = createLogger({
             maxFiles: '14d',
         }),
     ],
-})
+});
