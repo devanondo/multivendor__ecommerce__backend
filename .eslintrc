@@ -17,11 +17,13 @@
         "no-undef": "error",
         "no-unused-expressions": "error",
         "no-unreachable": "error",
+        "no-console": "warn",
         "@typescript-eslint/consistent-type-definitions": ["error", "type"]
     },
 
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     }
 }
