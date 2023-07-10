@@ -1,7 +1,7 @@
 {
-    "name": "node__express__ts__template",
+    "name": "multivendor__ecommerce__backend",
     "version": "1.0.0",
-    "description": "Starter express node typescript mongoose template",
+    "description": "Multivendor Ecommerce BE",
     "main": "src/server.ts",
     "scripts": {
         "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
@@ -10,6 +10,7 @@
         "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
         "prettier:fix": "prettier --write .",
         "lint-prettier": "yarn lint:check && yarn prettier:check",
+        "prepare": "husky install",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "devabormon",
