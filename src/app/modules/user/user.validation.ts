@@ -24,16 +24,18 @@ const createUserZodSchema = z.object({
 });
 
 const updateUserZodSchema = z.object({
-    name: z
-        .object({
-            first_name: z.string(),
-            last_name: z.string(),
-        })
-        .optional(),
-    address: z.string().optional(),
-    profile_picture: z.string().optional(),
-    business_name: z.string().optional(),
-    business_address: z.string().optional(),
+    body: z.object({
+        name: z
+            .object({
+                first_name: z.string(),
+                last_name: z.string(),
+            })
+            .optional(),
+        address: z.string().optional(),
+        profile_picture: z.string().optional(),
+        business_name: z.string().optional(),
+        business_address: z.string().optional(),
+    }),
 });
 
 export const UserZodValidation = {

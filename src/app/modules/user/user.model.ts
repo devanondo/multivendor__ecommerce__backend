@@ -1,10 +1,10 @@
-import { Schema, model } from 'mongoose';
-import { IUser, UserModel } from './user.interface';
-import { user_roles } from './user.constants';
 import bcrypt from 'bcrypt';
+import { Schema, model } from 'mongoose';
 import config from '../../../config';
+import { userFilterEndpoints, user_roles } from './user.constants';
+import { IUser, UserModel } from './user.interface';
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUser, UserModel>(
     {
         userid: {
             type: String,
@@ -44,6 +44,33 @@ const UserSchema = new Schema<IUser>(
         },
     }
 );
+
+UserSchema.statics.isUserExist = async function (
+    query: string
+): Promise<IUser | null> {
+    const user = await User.aggregate([
+        ...userFilterEndpoints,
+        {
+            $match: {
+                $or: [
+                    { userid: query },
+                    { phone: query },
+                    { 'userDetails.email': query },
+                ],
+            },
+        },
+    ]);
+
+    // return await User.findOne({ query }, { userid: 1, password: 1, role: 1 });
+    return user[0];
+};
+
+UserSchema.statics.isPasswordMatched = async function (
+    givenPassword: string,
+    savedPassword: string
+): Promise<boolean> {
+    return await bcrypt.compare(givenPassword, savedPassword);
+};
 
 UserSchema.pre('save', async function (next) {
     // hashing user password

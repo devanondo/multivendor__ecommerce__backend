@@ -8,6 +8,7 @@ const router = Router();
 // Action with single --> id
 router
     .route('/:id')
+    .get(UserController.getSingleUsers)
     .patch(
         validateData(UserZodValidation.updateUserZodSchema),
         UserController.updateUser

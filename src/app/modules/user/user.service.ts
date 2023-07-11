@@ -10,7 +10,7 @@ import { ICustomer } from '../customer/customer.interface';
 import { Customer } from '../customer/customer.model';
 import { IVendor } from '../vendor/vendor.interface';
 import { Vendor } from '../vendor/vendor.model';
-import { userFilterableFields } from './user.constants';
+import { userFilterEndpoints, userFilterableFields } from './user.constants';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
 import { generateUserId } from './user.utils';
@@ -123,51 +123,7 @@ const getUsers = async (
     const sortValue = sortOrder === 'ascending' || sortOrder === 'asc' ? 1 : -1;
 
     const filterConditions = [
-        {
-            $lookup: {
-                from: 'admins',
-                localField: 'admin',
-                foreignField: '_id',
-                as: 'adminData',
-            },
-        },
-        {
-            $lookup: {
-                from: 'vendors',
-                localField: 'vendor',
-                foreignField: '_id',
-                as: 'vendorData',
-            },
-        },
-        {
-            $lookup: {
-                from: 'customers',
-                localField: 'customer',
-                foreignField: '_id',
-                as: 'customerData',
-            },
-        },
-        {
-            $project: {
-                _id: 1,
-                userid: 1,
-                role: 1,
-                phone: 1,
-                createdAt: 1,
-                userDetails: {
-                    $arrayElemAt: [
-                        {
-                            $concatArrays: [
-                                '$adminData',
-                                '$vendorData',
-                                '$customerData',
-                            ],
-                        },
-                        0,
-                    ],
-                },
-            },
-        },
+        ...userFilterEndpoints,
         {
             $match: whereConditions,
         },
@@ -202,15 +158,19 @@ const getUsers = async (
 
 // Get single user --> customer | admin | vendor
 const getSingleUsers = async (id: string): Promise<IUser | null> => {
-    const user = await User.findOne({ userid: id }, { password: 0 })
-        .populate('customer')
-        .populate('vendor')
-        .populate('admin')
-        .lean();
+    const user = await User.aggregate([
+        ...userFilterEndpoints,
+        {
+            $match: {
+                userid: id,
+            },
+        },
+    ]);
 
-    if (user) throw new ApiError(httpStatus.NOT_FOUND, 'User not round!');
+    if (!user.length)
+        throw new ApiError(httpStatus.NOT_FOUND, 'User not round!');
 
-    return user;
+    return user[0];
 };
 
 // Update user
