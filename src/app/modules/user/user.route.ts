@@ -5,12 +5,22 @@ import { UserController } from './user.controller';
 
 const router = Router();
 
-// Register User
-router.post(
-    '/',
-    validateData(UserZodValidation.createUserZodSchema),
-    UserController.createUser
-);
+// Action with single --> id
+router
+    .route('/:id')
+    .patch(
+        validateData(UserZodValidation.updateUserZodSchema),
+        UserController.updateUser
+    );
+
+// Action in the root route --> /
+router
+    .route('/')
+    .get(UserController.getUsers)
+    .post(
+        validateData(UserZodValidation.createUserZodSchema),
+        UserController.createUser
+    );
 
 // Register Admin
 

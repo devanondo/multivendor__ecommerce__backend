@@ -16,3 +16,11 @@ export type IUser = {
 };
 
 export type UserModel = Model<IUser, Record<string, unknown>>;
+
+export type IUserFilters = {
+    searchTerm?: string;
+    userid?: string;
+    email?: string;
+    phone?: string;
+    role?: string;
+};
