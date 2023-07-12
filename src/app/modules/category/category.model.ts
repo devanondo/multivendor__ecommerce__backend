@@ -25,6 +25,10 @@ const CategorySchema = new Schema<ICategory>(
                 title: String,
                 description: String,
                 banner_image: String,
+                active_status: {
+                    type: Boolean,
+                    default: false,
+                },
             },
         ],
         author: {

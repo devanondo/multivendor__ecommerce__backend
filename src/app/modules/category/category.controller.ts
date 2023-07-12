@@ -72,9 +72,43 @@ const addSubCategory: RequestHandler = catchAsync(
     }
 );
 
+// Approve | Suspend Category status
+const approveCategory: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const result = await CategoryService.approveCategory(id);
+
+        sendResponse<ICategory>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Category Updated',
+            data: result,
+        });
+    }
+);
+
+// Approve | Suspend Sub Category status
+const approveSubCategory: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const result = await CategoryService.approveSubCategory(id);
+
+        sendResponse<ICategory>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Category Updated',
+            data: result,
+        });
+    }
+);
+
 export const CategoryController = {
     createCategory,
     getCategory,
     getSingleCategory,
     addSubCategory,
+    approveCategory,
+    approveSubCategory,
 };

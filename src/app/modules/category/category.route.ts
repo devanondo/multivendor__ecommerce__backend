@@ -22,4 +22,9 @@ router
         CategoryController.addSubCategory
     );
 
+router.route('/active_status/:id').patch(CategoryController.approveCategory);
+router
+    .route('/sub_active_status/:id')
+    .patch(CategoryController.approveSubCategory);
+
 export const CategoryRoutes = router;
