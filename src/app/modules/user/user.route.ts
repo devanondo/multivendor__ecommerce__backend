@@ -14,6 +14,9 @@ router
         UserController.updateUser
     );
 
+// Action --> User Profile
+// router.route('/me')
+
 // Action in the root route --> /
 router
     .route('/')
