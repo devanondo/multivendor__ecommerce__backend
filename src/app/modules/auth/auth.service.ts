@@ -22,13 +22,14 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
         throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect Password');
     }
 
-    const { role, userid } = isUserExist;
+    const { role, userid, _id } = isUserExist;
 
     // Generate access token
     const accessToken = jwtHealers.createToken(
         {
             userid,
-            role: role,
+            role,
+            _id,
         },
         config.jwt.secret as Secret,
         config.jwt.exprire_in as string
@@ -38,7 +39,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     const refreshToken = jwtHealers.createToken(
         {
             userid,
-            role: role,
+            role,
+            _id,
         },
         config.jwt.refresh_secret as Secret,
         config.jwt.refresh_exprire_in as string

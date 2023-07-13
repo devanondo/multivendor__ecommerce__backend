@@ -14,6 +14,7 @@ export type IUser = {
         first_name?: string;
         last_name?: string;
     };
+    _id?: Types.ObjectId;
 };
 
 // export type UserModel = Model<IUser, Record<string, unknown>>;
@@ -21,7 +22,7 @@ export type IUser = {
 export type UserModel = {
     isUserExist(
         key: string
-    ): Promise<Pick<IUser, 'userid' | 'password' | 'role'>>;
+    ): Promise<Pick<IUser, '_id' | 'userid' | 'password' | 'role'>>;
     isPasswordMatched(
         givenPassword: string,
         savedPassword: string

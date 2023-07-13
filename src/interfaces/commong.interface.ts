@@ -14,3 +14,8 @@ export type IGenericResponse<T> = {
     };
     data: T;
 };
+
+export type IImage = {
+    public_id: string;
+    url: string;
+};
