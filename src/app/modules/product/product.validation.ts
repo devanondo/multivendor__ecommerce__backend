@@ -1,5 +1,5 @@
-import { visibility } from './product.constants';
 import { z } from 'zod';
+import { visibility } from './product.constants';
 
 const createProductZodSchema = z.object({
     body: z.object({
@@ -47,7 +47,15 @@ const updateProductZodSchema = z.object({
         brand: z.string().optional(),
     }),
 });
-const updateProductStatusZodSchema = z.object({
+const updateProductVislibilityZodSchema = z.object({
+    body: z.object({
+        visibility: z.enum(['private', 'public', 'protected'] as [
+            string,
+            ...string[]
+        ]),
+    }),
+});
+const updateProductVislibilityAdminZodSchema = z.object({
     body: z.object({
         visibility: z.enum([...visibility] as [string, ...string[]]),
     }),
@@ -56,5 +64,6 @@ const updateProductStatusZodSchema = z.object({
 export const ProductZodValidation = {
     createProductZodSchema,
     updateProductZodSchema,
-    updateProductStatusZodSchema,
+    updateProductVislibilityZodSchema,
+    updateProductVislibilityAdminZodSchema,
 };

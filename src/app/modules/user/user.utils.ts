@@ -21,11 +21,11 @@ const findLastShopId = async (): Promise<string | undefined> => {
 };
 
 const findLastProductId = async (): Promise<string | undefined> => {
-    const lastShop = await Product.findOne({}, { shop_id: 1, _id: 0 })
+    const lastShop = await Product.findOne({}, { product_id: 1, _id: 0 })
         .sort({ createdAt: -1 })
         .lean();
 
-    return lastShop?.product_id ? lastShop.product_id.substring(7) : undefined;
+    return lastShop?.product_id ? lastShop.product_id.substring(12) : undefined;
 };
 
 // CUS0Y23000001
@@ -46,6 +46,7 @@ export const generateUserId = async (
 };
 
 // PDT0Y2023CA000001
+// PDCT0Y2023AR000024
 export const generateProductId = async (
     prefix: string,
     category: string
@@ -55,9 +56,9 @@ export const generateProductId = async (
     const cate = category.toUpperCase().substring(2, 4);
 
     const currentId =
-        (await findLastProductId()) || (0).toString().padStart(6, '0');
+        (await findLastProductId()) || (0).toString().padStart(8, '0');
 
-    let incrementedId = (parseInt(currentId) + 1).toString().padStart(6, '0');
+    let incrementedId = (parseInt(currentId) + 1).toString().padStart(8, '0');
 
     incrementedId = `${prefix}0Y${year}${cate}${incrementedId}`;
     return incrementedId;

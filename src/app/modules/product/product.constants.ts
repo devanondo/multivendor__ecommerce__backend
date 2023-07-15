@@ -11,3 +11,38 @@ export const productFilterableFields = [
     'rating',
     'shop.shop_name',
 ];
+
+export const productFilterEndpoints = [
+    {
+        $lookup: {
+            from: 'shops',
+            localField: 'shop',
+            foreignField: '_id',
+            as: 'shop',
+        },
+    },
+    {
+        $unwind: '$shop',
+    },
+    {
+        $match: {
+            $and: [
+                { visibility: 'public' },
+                { 'shop.active_status': 'public' },
+            ],
+        },
+    },
+];
+export const allProductFilterEndpoints = [
+    {
+        $lookup: {
+            from: 'shops',
+            localField: 'shop',
+            foreignField: '_id',
+            as: 'shop',
+        },
+    },
+    {
+        $unwind: '$shop',
+    },
+];
