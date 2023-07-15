@@ -1,6 +1,5 @@
 import { Model, Types } from 'mongoose';
 import { IImage } from '../../../interfaces/commong.interface';
-import { IReviews } from '../product/product.interface';
 
 export type IShop = {
     shop_name: string;
@@ -11,8 +10,8 @@ export type IShop = {
     shop_banner: IImage[];
     active_status: 'public' | 'private' | 'protected' | 'restricted';
     shop_rating?: number;
-    shop_review?: IReviews[];
-    shop_owner: Types.ObjectId;
+    shop_review: Types.ObjectId[];
+    shop_owner: string;
 };
 
 export type ShopModel = Model<IShop, Record<string, unknown>>;

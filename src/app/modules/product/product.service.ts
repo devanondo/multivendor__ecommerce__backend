@@ -150,6 +150,57 @@ const getSingleProducts = async (id: string): Promise<IProduct | null> => {
     return product;
 };
 
+// Get a Shop products
+const getShopProducts = async (
+    shop_id: string,
+    pagination: IPaginationOptions
+): Promise<IGenericResponse<IProduct[]>> => {
+    const { page, limit, skip, sortBy, sortOrder } =
+        paginationHelpers.calculatePagination(pagination);
+
+    const sortConditions: { [key: string]: SortOrder } = {};
+
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const sortValue = sortOrder === 'ascending' || sortOrder === 'asc' ? 1 : -1;
+
+    const total = await Product.aggregate([
+        {
+            $match: { shop: shop_id },
+        },
+        ...productFilterEndpoints,
+    ]);
+
+    const shops = await Product.aggregate([
+        {
+            $match: { shop: shop_id },
+        },
+        ...productFilterEndpoints,
+        {
+            $sort: {
+                [sortBy]: sortValue,
+            },
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+    ]);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total: total.length,
+        },
+        data: shops,
+    };
+};
+
 // Update single product --> Admin | vendor | superadmin
 const updateSingleProducts = async (
     id: string,
@@ -187,6 +238,7 @@ export const ProductService = {
     getProducts,
     getAllProducts,
     getSingleProducts,
+    getShopProducts,
     updateSingleProducts,
     updateProductVisibility,
 };

@@ -13,7 +13,7 @@ export const shopFilterEndpoints = [
         $lookup: {
             from: 'users',
             localField: 'shop_owner',
-            foreignField: '_id',
+            foreignField: 'userid',
             as: 'shop_owner',
         },
     },

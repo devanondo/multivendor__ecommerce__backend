@@ -1,12 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { IImage } from '../../../interfaces/commong.interface';
 
-export type IReviews = {
-    message: string;
-    images: string[];
-    rating: number;
-};
-
 export type IProduct = {
     name: string;
     product_id: string;
@@ -23,8 +17,8 @@ export type IProduct = {
     features?: string;
     rating?: number;
     brand?: string;
-    reviews?: IReviews[];
-    shop?: Types.ObjectId;
+    reviews: Types.ObjectId[];
+    shop: string;
 };
 
 export type ProductModel = Model<IProduct, Record<string, unknown>>;

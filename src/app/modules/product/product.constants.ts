@@ -17,7 +17,7 @@ export const productFilterEndpoints = [
         $lookup: {
             from: 'shops',
             localField: 'shop',
-            foreignField: '_id',
+            foreignField: 'shop_id',
             as: 'shop',
         },
     },
@@ -38,7 +38,7 @@ export const allProductFilterEndpoints = [
         $lookup: {
             from: 'shops',
             localField: 'shop',
-            foreignField: '_id',
+            foreignField: 'shop_id',
             as: 'shop',
         },
     },

@@ -1,13 +1,14 @@
 import httpStatus from 'http-status';
+import { SortOrder } from 'mongoose';
 import ApiError from '../../../error/ApiError';
+import { filterConditions } from '../../../helpers/filterHealper';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/commong.interface';
+import { IPaginationOptions } from '../../../shared/paginationOptions';
+import { generateShopId } from '../user/user.utils';
+import { shopFilterEndpoints, shopFilterableFields } from './shop.constants';
 import { IShop, IShopFilter } from './shop.interface';
 import { Shop } from './shop.model';
-import { generateShopId } from '../user/user.utils';
-import { IPaginationOptions } from '../../../shared/paginationOptions';
-import { IGenericResponse } from '../../../interfaces/commong.interface';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { shopFilterEndpoints, shopFilterableFields } from './shop.constants';
-import { SortOrder } from 'mongoose';
 
 const createShop = async (shop: Partial<IShop>): Promise<IShop | null> => {
     const shopid = await generateShopId('SHO');
@@ -37,37 +38,17 @@ const getShops = async (
 
     const { searchTerm, ...filtersData } = filters;
 
-    const andConditions = [];
-
-    // Search needs $or for searching in specified fields
-    if (searchTerm) {
-        andConditions.push({
-            $or: shopFilterableFields.map((field) => ({
-                [field]: {
-                    $regex: searchTerm,
-                    $options: 'i',
-                },
-            })),
-        });
-    }
-
-    // Filters needs $and to fullfill all the conditions
-    if (Object.keys(filtersData).length) {
-        andConditions.push({
-            $and: Object.entries(filtersData).map(([field, value]) => ({
-                [field]: value,
-            })),
-        });
-    }
-
     const sortConditions: { [key: string]: SortOrder } = {};
 
     if (sortBy && sortOrder) {
         sortConditions[sortBy] = sortOrder;
     }
 
-    const whereConditions =
-        andConditions.length > 0 ? { $and: andConditions } : {};
+    const whereConditions = filterConditions(
+        searchTerm,
+        shopFilterableFields,
+        filtersData
+    );
 
     const sortValue = sortOrder === 'ascending' || sortOrder === 'asc' ? 1 : -1;
 
@@ -106,7 +87,43 @@ const getShops = async (
     };
 };
 
+// Get single shop with products
+const getSingleShops = async (id: string): Promise<IShop> => {
+    const shop = await Shop.aggregate([
+        {
+            $match: {
+                shop_id: id,
+            },
+        },
+        ...shopFilterEndpoints,
+    ]);
+
+    if (!shop.length)
+        throw new ApiError(httpStatus.NOT_FOUND, 'Shop Not found!');
+
+    return shop[0];
+};
+
+// Update Shop & shop active_status --> by admin | superadmin
+const updateSingleShop = async (
+    id: string,
+    updateShop: Partial<IShop>
+): Promise<IShop | null> => {
+    const newShopData = await Shop.findOneAndUpdate(
+        { shop_id: id },
+        updateShop,
+        { new: true }
+    );
+
+    if (!newShopData)
+        throw new ApiError(httpStatus.FORBIDDEN, 'Faild to Update Shop');
+
+    return newShopData;
+};
+
 export const ShopService = {
     createShop,
     getShops,
+    getSingleShops,
+    updateSingleShop,
 };

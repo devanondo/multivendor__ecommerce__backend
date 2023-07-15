@@ -40,9 +40,9 @@ const ShopSchema = new Schema<IShop>({
         type: Number,
         default: 0,
     },
+    shop_review: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     shop_owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true,
     },
 });

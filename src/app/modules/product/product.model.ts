@@ -50,24 +50,10 @@ const ProductSchema = new Schema<IProduct>(
             default: 0,
         },
         brand: String,
-        reviews: [
-            {
-                message: String,
-                images: [
-                    {
-                        public_id: String,
-                        url: String,
-                    },
-                ],
-                rating: {
-                    type: Number,
-                    default: 0,
-                },
-            },
-        ],
+        reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
         shop: {
-            type: Schema.Types.ObjectId,
-            ref: 'Shop',
+            type: String,
+            required: true,
         },
     },
     {

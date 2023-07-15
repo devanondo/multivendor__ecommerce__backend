@@ -12,7 +12,7 @@ import { ShopService } from './shop.service';
 const createShop: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const shop = req.body;
-        shop.shop_owner = req?.user?._id;
+        shop.shop_owner = req?.user?.userid;
 
         const result = await ShopService.createShop(shop);
 
@@ -44,7 +44,42 @@ const getShops: RequestHandler = catchAsync(
     }
 );
 
+// Get all a Shop with products
+const getSingleShop: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const result = await ShopService.getSingleShops(id);
+
+        sendResponse<IShop>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Shop Retrived Successfully',
+            data: result,
+        });
+    }
+);
+
+// Update Shop active_status --> Only for the Admin & SuperAdmin
+const updateSingleShop: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body;
+
+        const result = await ShopService.updateSingleShop(id, payload);
+
+        sendResponse<IShop>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Shop Update Successfully',
+            data: result,
+        });
+    }
+);
+
 export const ShopController = {
     createShop,
     getShops,
+    getSingleShop,
+    updateSingleShop,
 };

@@ -53,4 +53,6 @@ router // Only for admin | superadmin
         ProductController.updateProductVisibility
     );
 
+router.route('/shop/:id').get(ProductController.getShopProducts); // Get a shop products
+
 export const ProductRoutes = router;

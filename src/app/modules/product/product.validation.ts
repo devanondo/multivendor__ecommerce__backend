@@ -33,27 +33,40 @@ const createProductZodSchema = z.object({
 });
 
 const updateProductZodSchema = z.object({
-    body: z.object({
-        name: z.string().optional(),
-        category: z.string().optional(),
-        sub_category: z.string().optional(),
-        price: z.number().optional(),
-        stocked: z.string().optional(),
-        description: z.string().optional(),
-        variations: z.array(z.string().optional()),
-        weight: z.number().optional(),
-        diamention: z.string().optional(),
-        features: z.string().optional(),
-        brand: z.string().optional(),
-    }),
+    body: z
+        .object({
+            name: z.string().optional(),
+            category: z.string().optional(),
+            sub_category: z.string().optional(),
+            price: z.number().optional(),
+            stocked: z.string().optional(),
+            description: z.string().optional(),
+            variations: z.array(z.string().optional()),
+            weight: z.number().optional(),
+            diamention: z.string().optional(),
+            features: z.string().optional(),
+            brand: z.string().optional(),
+            visibility: z
+                .enum(['private', 'public', 'protected'] as [
+                    string,
+                    ...string[]
+                ])
+                .optional(),
+        })
+        .refine((obj) => !('visibility' in obj), {
+            message: "The 'visibility' is not allowed.",
+            path: ['visibility'],
+        }),
 });
 const updateProductVislibilityZodSchema = z.object({
-    body: z.object({
-        visibility: z.enum(['private', 'public', 'protected'] as [
-            string,
-            ...string[]
-        ]),
-    }),
+    body: z
+        .object({
+            visibility: z.enum(['private', 'public', 'protected'] as [
+                string,
+                ...string[]
+            ]),
+        })
+        .strict(),
 });
 const updateProductVislibilityAdminZodSchema = z.object({
     body: z.object({

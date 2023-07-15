@@ -84,6 +84,27 @@ const getSingleProducts: RequestHandler = catchAsync(
     }
 );
 
+// Get a Shop products
+const getShopProducts: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const paginationOptions = pick(req.query, paginationQueryOptions);
+        const id = req.params.id;
+
+        const result = await ProductService.getShopProducts(
+            id,
+            paginationOptions
+        );
+
+        sendResponse<IProduct[]>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Product Retrived Successfully',
+            meta: result.meta,
+            data: result.data,
+        });
+    }
+);
+
 // Update Single product
 const updateSingleProducts: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
@@ -125,6 +146,7 @@ export const ProductController = {
     getAllProducts,
     getProducts,
     getSingleProducts,
+    getShopProducts,
     updateSingleProducts,
     updateProductVisibility,
 };
