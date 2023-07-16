@@ -114,6 +114,7 @@ const getAllProducts = async (
     const sortValue = sortOrder === 'ascending' || sortOrder === 'asc' ? 1 : -1;
 
     const total = await Product.aggregate([{ $match: whereConditions }]);
+
     const products = await Product.aggregate([
         ...allProductFilterEndpoints,
         { $match: whereConditions },
@@ -142,12 +143,19 @@ const getAllProducts = async (
 
 // Get Single product
 const getSingleProducts = async (id: string): Promise<IProduct | null> => {
-    const product = await Product.findOne({ product_id: id }).populate('shop');
+    const product = await Product.aggregate([
+        {
+            $match: {
+                product_id: id,
+            },
+        },
+        ...allProductFilterEndpoints,
+    ]);
 
     if (!product)
         throw new ApiError(httpStatus.NOT_FOUND, 'Product not round!');
 
-    return product;
+    return product[0];
 };
 
 // Get a Shop products
@@ -207,8 +215,8 @@ const updateSingleProducts = async (
     updatedData: Partial<IProduct>
 ): Promise<IProduct | null> => {
     const product = await Product.findOneAndUpdate(
-        { product_id: id, visibility: 'private' },
-        updatedData,
+        { product_id: id },
+        { ...updatedData, visibility: 'private' },
         { new: true }
     );
 

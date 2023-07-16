@@ -39,7 +39,7 @@ const getAllProducts: RequestHandler = catchAsync(
         sendResponse<IProduct[]>(res, {
             statusCode: httpStatus.OK,
             success: true,
-            message: 'Product Retrived Successfully',
+            message: 'Products Retrived Successfully',
             meta: result.meta,
             data: result.data,
         });

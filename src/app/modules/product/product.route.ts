@@ -16,15 +16,6 @@ router
     .get(ProductController.getProducts);
 
 router
-    .route('/:id') // product_id
-    .patch(
-        auth(),
-        validateData(ProductZodValidation.updateProductZodSchema),
-        ProductController.updateSingleProducts
-    )
-    .get(ProductController.getSingleProducts);
-
-router
     .route('/product_visibility/:id') // product_id
     .patch(
         auth(),
@@ -52,6 +43,15 @@ router // Only for admin | superadmin
         ),
         ProductController.updateProductVisibility
     );
+
+router
+    .route('/:id') // product_id
+    .patch(
+        auth(),
+        validateData(ProductZodValidation.updateProductZodSchema),
+        ProductController.updateSingleProducts
+    )
+    .get(ProductController.getSingleProducts);
 
 router.route('/shop/:id').get(ProductController.getShopProducts); // Get a shop products
 

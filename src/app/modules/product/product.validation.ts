@@ -39,9 +39,9 @@ const updateProductZodSchema = z.object({
             category: z.string().optional(),
             sub_category: z.string().optional(),
             price: z.number().optional(),
-            stocked: z.string().optional(),
+            stocked: z.number().optional(),
             description: z.string().optional(),
-            variations: z.array(z.string().optional()),
+            variations: z.array(z.string().optional()).optional(),
             weight: z.number().optional(),
             diamention: z.string().optional(),
             features: z.string().optional(),
@@ -56,7 +56,8 @@ const updateProductZodSchema = z.object({
         .refine((obj) => !('visibility' in obj), {
             message: "The 'visibility' is not allowed.",
             path: ['visibility'],
-        }),
+        })
+        .optional(),
 });
 const updateProductVislibilityZodSchema = z.object({
     body: z
