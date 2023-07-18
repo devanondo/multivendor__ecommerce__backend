@@ -5,6 +5,7 @@ export type IProduct = {
     name: string;
     product_id: string;
     price: number;
+    sold: number;
     stocked: number;
     category: string;
     sub_category?: string;

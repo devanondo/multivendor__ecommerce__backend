@@ -1,5 +1,7 @@
 // Generate the customer|vendor|admin custom id `userid`
 
+import moment from 'moment';
+import { Order } from '../order/order.model';
 import { Product } from '../product/product.model';
 import { Shop } from '../shop/shop.model';
 import { User } from './user.model';
@@ -26,6 +28,14 @@ const findLastProductId = async (): Promise<string | undefined> => {
         .lean();
 
     return lastShop?.product_id ? lastShop.product_id.substring(12) : undefined;
+};
+
+const findLastOrderId = async (): Promise<string | undefined> => {
+    const lastOrder = await Order.findOne({}, { order_id: 1, _id: 0 })
+        .sort({ createdAt: -1 })
+        .lean();
+
+    return lastOrder?.order_id ? lastOrder.order_id.substring(16) : undefined;
 };
 
 // CUS0Y23000001
@@ -75,5 +85,17 @@ export const generateShopId = async (prefix: string): Promise<string> => {
     let incrementedId = (parseInt(currentId) + 1).toString().padStart(6, '0');
 
     incrementedId = `${prefix}0Y${year}${incrementedId}`;
+    return incrementedId;
+};
+// SHO0Y23000001
+export const generateOrderId = async (prefix: string): Promise<string> => {
+    const dateTime = moment().format('YYYYMMDDTHH');
+
+    const currentId =
+        (await findLastOrderId()) || (0).toString().padStart(8, '0');
+
+    let incrementedId = (parseInt(currentId) + 1).toString().padStart(12, '0');
+
+    incrementedId = `${prefix}${dateTime}${incrementedId}`;
     return incrementedId;
 };
