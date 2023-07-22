@@ -12,7 +12,10 @@ const AdminSchema = new Schema<IAdmin>(
             last_name: String,
         },
         address: String,
-        profile_picture: String,
+        profile_picture: {
+            public_id: String,
+            url: String,
+        },
     },
     {
         timestamps: true,

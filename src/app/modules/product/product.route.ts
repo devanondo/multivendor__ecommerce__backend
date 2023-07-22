@@ -9,7 +9,7 @@ const router = Router();
 router
     .route('/')
     .post(
-        auth(),
+        auth('admin', 'superadmin', 'vendor'),
         validateData(ProductZodValidation.createProductZodSchema),
         ProductController.createProduct
     )
@@ -18,16 +18,16 @@ router
 router
     .route('/product_visibility/:id') // product_id
     .patch(
-        auth(),
+        auth('admin', 'superadmin'),
         validateData(ProductZodValidation.updateProductVislibilityZodSchema),
         ProductController.updateProductVisibility
     );
 
 router // Only for admin | superadmin
     .route('/admin')
-    .get(ProductController.getAllProducts)
+    .get(auth('admin', 'superadmin'), ProductController.getAllProducts)
     .patch(
-        auth(),
+        auth('admin', 'superadmin'),
         validateData(
             ProductZodValidation.updateProductVislibilityAdminZodSchema
         ),
@@ -37,7 +37,7 @@ router // Only for admin | superadmin
 router // Only for admin | superadmin
     .route('/admin/product_visibility/:id')
     .patch(
-        auth(),
+        auth('admin', 'superadmin'),
         validateData(
             ProductZodValidation.updateProductVislibilityAdminZodSchema
         ),
@@ -47,7 +47,7 @@ router // Only for admin | superadmin
 router
     .route('/:id') // product_id
     .patch(
-        auth(),
+        auth('admin', 'superadmin', 'vendor'),
         validateData(ProductZodValidation.updateProductZodSchema),
         ProductController.updateSingleProducts
     )

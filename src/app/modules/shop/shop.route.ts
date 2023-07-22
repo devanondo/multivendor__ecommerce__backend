@@ -9,7 +9,7 @@ const router = Router();
 router
     .route('/')
     .post(
-        auth(),
+        auth('vendor'),
         validateData(ShopZodValidation.createShopZodSchema),
         ShopController.createShop
     )
@@ -19,7 +19,7 @@ router
     .route('/:id')
     .get(ShopController.getSingleShop) // Get single shop
     .patch(
-        auth(),
+        auth('admin', 'superadmin', 'vendor'),
         validateData(ShopZodValidation.updateShopZodSchema),
         ShopController.updateSingleShop
     ); // Update Single shop by --> admin | superadmin | vendor
@@ -27,7 +27,7 @@ router
 router
     .route('/active_staus/:id')
     .patch(
-        auth(),
+        auth('admin', 'superadmin'),
         validateData(ShopZodValidation.updateShopActiveStatusZodSchema),
         ShopController.updateSingleShop
     ); // Only accessed by the admin | superadmin

@@ -8,7 +8,7 @@ import { userFilterableFields } from './user.constants';
 import { IUser } from './user.interface';
 import { UserService } from './user.service';
 
-// Create user | Register user --> customer | admin | vendor
+// Create user | Register user --> customer | vendor
 const createUser: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const user = req.body;
@@ -18,6 +18,21 @@ const createUser: RequestHandler = catchAsync(
             statusCode: httpStatus.OK,
             success: true,
             message: 'User Created Successfully',
+            data: result,
+        });
+    }
+);
+
+// Create user | Register user --> customer | admin | vendor
+const createAdmin: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const user = req.body;
+        const result = await UserService.createAdmin(user);
+
+        sendResponse<IUser>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Admin Created Successfully',
             data: result,
         });
     }
@@ -77,6 +92,7 @@ const updateUser: RequestHandler = catchAsync(
 
 export const UserController = {
     createUser,
+    createAdmin,
     updateUser,
     getSingleUsers,
     getUsers,

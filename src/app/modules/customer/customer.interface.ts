@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { IImage } from '../../../interfaces/commong.interface';
 
 export type ICustomer = {
     email: string;
@@ -7,7 +8,7 @@ export type ICustomer = {
         last_name?: string;
     };
     address?: string;
-    profile_picture?: string;
+    profile_picture?: IImage;
 };
 
 export type CustomerModel = Model<ICustomer, Record<string, unknown>>;

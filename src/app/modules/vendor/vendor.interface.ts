@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { IImage } from '../../../interfaces/commong.interface';
 
 export type IVendor = {
     email: string;
@@ -7,7 +8,7 @@ export type IVendor = {
         last_name?: string;
     };
     address?: string;
-    profile_picture?: string;
+    profile_picture?: IImage;
     business_name?: string;
     business_phone?: string;
     business_email?: string;

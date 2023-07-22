@@ -12,7 +12,10 @@ const CustomerSchema = new Schema<ICustomer>(
             last_name: String,
         },
         address: String,
-        profile_picture: String,
+        profile_picture: {
+            public_id: String,
+            url: String,
+        },
     },
     {
         timestamps: true,

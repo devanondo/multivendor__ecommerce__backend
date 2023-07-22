@@ -35,6 +35,45 @@ const createOrderZodSchema = z.object({
         .strict(),
 });
 
+const changeOrderProductStatusZodSchema = z.object({
+    body: z
+        .object({
+            order_id: z.string({
+                required_error: 'Order is required',
+            }),
+            product_id: z.string({
+                required_error: 'Product is required',
+            }),
+            order_status: z.enum([
+                'received',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+            ] as [string, ...string[]]),
+        })
+        .strict(),
+});
+
+const changeOrderStatusZodSchema = z.object({
+    body: z
+        .object({
+            order_id: z.string({
+                required_error: 'Order is required',
+            }),
+            order_status: z.enum([
+                'received',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+            ] as [string, ...string[]]),
+        })
+        .strict(),
+});
+
 export const OrderZodValidation = {
     createOrderZodSchema,
+    changeOrderProductStatusZodSchema,
+    changeOrderStatusZodSchema,
 };

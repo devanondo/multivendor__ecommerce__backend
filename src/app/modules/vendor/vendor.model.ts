@@ -12,7 +12,10 @@ const VendorSchema = new Schema<IVendor>(
             last_name: String,
         },
         address: String,
-        profile_picture: String,
+        profile_picture: {
+            public_id: String,
+            url: String,
+        },
         business_name: String,
         business_phone: String,
         business_email: String,
