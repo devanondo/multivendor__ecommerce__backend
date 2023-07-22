@@ -1,17 +1,16 @@
 /* eslint-disable no-unused-expressions */
 import { ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
 import config from '../config';
 import ApiError from '../error/ApiError';
 import handleValidationError from '../error/handleValidationError';
-import { IGenericErrorMessage } from '../interfaces/error.interface';
-import { errorLogger } from '../shared/logger';
-import { ZodError } from 'zod';
 import handleZodError from '../error/handleZodError';
+import { IGenericErrorMessage } from '../interfaces/error.interface';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     config.env === 'development'
         ? console.log(`🚀 globalErrorHandler ~ `, error)
-        : errorLogger.error(`🚀 globalErrorHandler ~ `, error);
+        : console.log(`🚀 globalErrorHandler ~ `, error);
 
     let statusCode = 500;
     let message = 'Something went wrong!';
