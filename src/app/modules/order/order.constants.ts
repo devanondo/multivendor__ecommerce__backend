@@ -15,6 +15,15 @@ export const orderSearchableFields = [
     'refund_requested',
 ];
 
+export const orderStatus = [
+    'received',
+    'processing',
+    'shipped',
+    'delivered',
+    'req_cancel',
+    'cancelled',
+];
+
 export const shopOrderFilterEndpoints = [
     {
         $unwind: '$order_items',

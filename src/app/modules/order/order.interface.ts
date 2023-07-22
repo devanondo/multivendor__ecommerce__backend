@@ -4,7 +4,13 @@ export type IProductItems = {
     product_quantity: number;
     discount: number;
     price: number;
-    order_status: string;
+    order_status:
+        | 'received'
+        | 'processing'
+        | 'shipped'
+        | 'delivered'
+        | 'req_cancel'
+        | 'cancelled';
 };
 
 export type IOrderItem = {
@@ -18,7 +24,13 @@ export type IOrder = {
     shipping_address: string;
     total_price: number;
     payment_method: string;
-    order_status: string;
+    order_status:
+        | 'received'
+        | 'processing'
+        | 'shipped'
+        | 'delivered'
+        | 'req_cancel'
+        | 'cancelled';
     billing_address?: string;
     notes?: string;
     refund_requested?: boolean;

@@ -8,6 +8,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { orderSearchableFields } from './order.constants';
 import { IOrder } from './order.interface';
 import { OrderService } from './order.service';
+
 // Create order
 const createOrder: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
@@ -94,10 +95,78 @@ const getAShopOrders: RequestHandler = catchAsync(
     }
 );
 
+// Request to cancel order
+const requestToCancleOrder: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const order_id = req.params.id;
+        const result = await OrderService.requestToCancleOrder(order_id);
+
+        sendResponse<Partial<IOrder>>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Request Received!',
+            data: result,
+        });
+    }
+);
+
+// Accept cancel req by admin | superadmin
+const acceptCancelRequest: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const order_id = req.params.id;
+        const result = await OrderService.acceptCancelRequest(order_id);
+
+        sendResponse<Partial<IOrder>>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Order Cancelled',
+            data: result,
+        });
+    }
+);
+
+// chnage spesific order_status by  shop_owner | admin | superadmin
+const changeOrderProductStatus: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const { order_id, product_id, order_status } = req.body;
+        const result = await OrderService.changeOrderProductStatus(
+            order_id,
+            product_id,
+            order_status
+        );
+
+        sendResponse<Partial<IOrder>>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: `Order Updated to ${order_status}`,
+            data: result,
+        });
+    }
+);
+
+// chnage spesific order_status by admin | superadmin
+const changeStatus: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const { order_id, order_status } = req.body;
+        const result = await OrderService.changeStatus(order_id, order_status);
+
+        sendResponse<Partial<IOrder>>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: `Order Updated to ${order_status}`,
+            data: result,
+        });
+    }
+);
+
 export const OrderController = {
     createOrder,
     getOrders,
     getSingleOrder,
     getCustomerOrders,
     getAShopOrders,
+    requestToCancleOrder,
+    acceptCancelRequest,
+    changeOrderProductStatus,
+    changeStatus,
 };

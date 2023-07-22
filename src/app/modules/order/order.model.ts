@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IOrder, OrderModel } from './order.interface';
+import { orderStatus } from './order.constants';
 
 const OrderSchema = new Schema<IOrder>({
     order_id: {
@@ -24,6 +25,7 @@ const OrderSchema = new Schema<IOrder>({
     },
     order_status: {
         type: String,
+        enum: orderStatus,
         default: 'received',
     },
     billing_address: {
