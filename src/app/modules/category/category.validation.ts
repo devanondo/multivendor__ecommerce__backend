@@ -11,24 +11,13 @@ const createCategoryZodSchema = z.object({
         banner_image: z.string({
             required_error: 'Image is Required!',
         }),
-        sub_category: z.array(
-            z.object({
-                title: z.string().optional(),
-                description: z.string().optional(),
-                banner_image: z.string().optional(),
-            })
-        ),
     }),
 });
 const createSubCategoryZodSchema = z.object({
     body: z.object({
-        sub_category: z.array(
-            z.object({
-                title: z.string(),
-                description: z.string(),
-                banner_image: z.string(),
-            })
-        ),
+        title: z.string(),
+        description: z.string(),
+        banner_image: z.string(),
     }),
 });
 

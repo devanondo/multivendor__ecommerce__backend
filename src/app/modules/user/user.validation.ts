@@ -11,13 +11,11 @@ const createUserZodSchema = z.object({
         phone: z.string({
             required_error: 'Phone is Required!',
         }),
-        name: z.object({
-            first_name: z.string({
-                required_error: 'First Name is Required!',
-            }),
-            last_name: z.string({
-                required_error: 'Last Name is Required!',
-            }),
+        first_name: z.string({
+            required_error: 'First Name is Required!',
+        }),
+        last_name: z.string({
+            required_error: 'Last Name is Required!',
         }),
     }),
 });
@@ -32,13 +30,11 @@ const createAdminZodSchema = z.object({
         phone: z.string({
             required_error: 'Phone is Required!',
         }),
-        name: z.object({
-            first_name: z.string({
-                required_error: 'First Name is Required!',
-            }),
-            last_name: z.string({
-                required_error: 'Last Name is Required!',
-            }),
+        first_name: z.string({
+            required_error: 'First Name is Required!',
+        }),
+        last_name: z.string({
+            required_error: 'Last Name is Required!',
         }),
     }),
 });

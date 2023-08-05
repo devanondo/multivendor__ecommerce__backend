@@ -14,6 +14,7 @@ import { userFilterEndpoints, userFilterableFields } from './user.constants';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
 import { generateUserId } from './user.utils';
+import { uploadImage } from '../../../helpers/imageUploader';
 
 // Create user | Register User
 const createUser = async (user: IUser): Promise<IUser | null> => {
@@ -29,16 +30,31 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
         // Generate User Id `userid`
         let generatedUserId = null;
 
+        const avatar = await uploadImage('ecom/users', user.file);
+
+        if (!avatar) {
+            throw new ApiError(httpStatus.BAD_REQUEST, 'Faild to Create!');
+        }
+
         // Create Customer|Admin|Vendor
         if (user?.role === 'customer') {
-            createdUser = await Customer.create([{ name: name }], { session });
+            createdUser = await Customer.create(
+                [{ name: name, profile_picture: avatar }],
+                { session }
+            );
 
             generatedUserId = await generateUserId(userData.role, 'CUS');
         } else if (user?.role === 'vendor') {
-            createdUser = await Vendor.create([{ name: name }], { session });
+            createdUser = await Vendor.create(
+                [{ name: name, profile_picture: avatar }],
+                { session }
+            );
             generatedUserId = await generateUserId(userData.role, 'VEN');
         } else if (user?.role === 'admin') {
-            createdUser = await Admin.create([{ name: name }], { session });
+            createdUser = await Admin.create(
+                [{ name: name, profile_picture: avatar }],
+                { session }
+            );
             generatedUserId = await generateUserId(userData.role, 'ADM');
         }
 

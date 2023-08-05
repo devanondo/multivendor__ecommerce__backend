@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { CategoryModel, ICategory } from './category.interface';
+import { status } from './category.constant';
 
 const CategorySchema = new Schema<ICategory>(
     {
@@ -12,22 +13,31 @@ const CategorySchema = new Schema<ICategory>(
             type: String,
             required: true,
         },
-        banner_image: {
-            type: String,
-        },
+        banner_image: [
+            {
+                public_id: String,
+                url: String,
+            },
+        ],
         active_status: {
-            type: Boolean,
+            type: String,
+            enum: status,
+            default: 'pending',
             required: true,
-            default: false,
         },
         sub_category: [
             {
                 title: String,
                 description: String,
-                banner_image: String,
+                banner_image: {
+                    public_id: String,
+                    url: String,
+                },
                 active_status: {
-                    type: Boolean,
-                    default: false,
+                    type: String,
+                    required: true,
+                    enum: status,
+                    default: 'pending',
                 },
             },
         ],

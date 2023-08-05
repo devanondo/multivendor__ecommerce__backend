@@ -11,8 +11,18 @@ import { UserService } from './user.service';
 // Create user | Register user --> customer | vendor
 const createUser: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
-        const user = req.body;
-        const result = await UserService.createUser(user);
+        const formData = req.body;
+        const { first_name, last_name, ...restData } = formData;
+
+        const userData = {
+            name: {
+                first_name,
+                last_name,
+            },
+            ...restData,
+        };
+
+        const result = await UserService.createUser(userData);
 
         sendResponse<IUser>(res, {
             statusCode: httpStatus.OK,

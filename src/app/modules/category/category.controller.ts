@@ -6,11 +6,14 @@ import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import { ICategory } from './category.interface';
 import { CategoryService } from './categroy.service';
+import { categoryFilterableFilelds } from './category.constant';
 
 // Create Category
 const createCategory: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const category = req.body;
+        category.sub_category = JSON.parse(category.sub_category);
+
         const result = await CategoryService.createCategory(category);
 
         sendResponse<ICategory>(res, {
@@ -26,8 +29,12 @@ const createCategory: RequestHandler = catchAsync(
 const getCategory: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const paginationOptions = pick(req.query, paginationQueryOptions);
+        const filters = pick(req.query, categoryFilterableFilelds);
 
-        const result = await CategoryService.getCategory(paginationOptions);
+        const result = await CategoryService.getCategory(
+            filters,
+            paginationOptions
+        );
 
         sendResponse<ICategory[]>(res, {
             statusCode: httpStatus.OK,
@@ -59,7 +66,7 @@ const getSingleCategory: RequestHandler = catchAsync(
 const addSubCategory: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const id = req.params.id;
-        const { sub_category } = req.body;
+        const sub_category = req.body;
 
         const result = await CategoryService.addSubCategory(id, sub_category);
 
