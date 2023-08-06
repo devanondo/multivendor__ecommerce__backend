@@ -100,6 +100,8 @@ const getAllProducts = async (
 
     const { searchTerm, ...filtersData } = filters;
 
+    console.log(filtersData);
+
     const sortConditions: { [key: string]: SortOrder } = {};
 
     if (sortBy && sortOrder) {

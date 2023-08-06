@@ -4,7 +4,10 @@ import catchAsync from '../../../shared/catchAsync';
 import { paginationQueryOptions } from '../../../shared/paginationOptions';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { productFilterableFields } from './product.constants';
+import {
+    productFilterableFields,
+    productSearchableFields,
+} from './product.constants';
 import { IProduct } from './product.interface';
 import { ProductService } from './product.service';
 
@@ -27,7 +30,7 @@ const createProduct: RequestHandler = catchAsync(
 // Get all Products with paginations --> Only for the Admin & SuperAdmin
 const getAllProducts: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
-        const filters = pick(req.query, productFilterableFields);
+        const filters = pick(req.query, productSearchableFields);
 
         const paginationOptions = pick(req.query, paginationQueryOptions);
 

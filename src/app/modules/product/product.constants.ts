@@ -9,7 +9,22 @@ export const productFilterableFields = [
     'category',
     'sub_category',
     'rating',
+    'visibility',
     'shop.shop_name',
+];
+export const productSearchableFields = [
+    'searchTerm',
+    'name',
+    'product_id',
+    'price',
+    'stocked',
+    'category',
+    'sub_category',
+    'rating',
+    'visibility',
+    'weight',
+    'brand',
+    'shop',
 ];
 
 export const productFilterEndpoints = [

@@ -58,6 +58,8 @@ const createOrder = async (
                             `Less quantity of product ${product.stocked}`
                         );
                     product.sold += product_quantity;
+                    product.total_sold_price +=
+                        product_quantity * product.price;
 
                     await product.save();
                 }

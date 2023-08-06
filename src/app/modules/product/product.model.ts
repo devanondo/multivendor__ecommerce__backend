@@ -22,6 +22,10 @@ const ProductSchema = new Schema<IProduct>(
             type: Number,
             default: 0,
         },
+        total_sold_price: {
+            type: Number,
+            default: 0,
+        },
         category: {
             type: String,
             required: true,

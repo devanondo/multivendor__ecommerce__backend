@@ -12,7 +12,7 @@ router
     .route('/')
     .post(
         auth('customer'),
-        validateData(OrderZodValidation.createOrderZodSchema),
+        // validateData(OrderZodValidation.createOrderZodSchema),
         OrderController.createOrder
     )
     .get(OrderController.getOrders);

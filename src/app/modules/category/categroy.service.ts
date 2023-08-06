@@ -8,7 +8,10 @@ import { IPaginationOptions } from '../../../shared/paginationOptions';
 import { ICagegoryFilter, ICategory, ISubCategory } from './category.interface';
 import { Category } from './category.model';
 import { filterConditions } from '../../../helpers/filterHealper';
-import { categoryFilterableFilelds } from './category.constant';
+import {
+    categoryFilterableFilelds,
+    singleCategoryQuery,
+} from './category.constant';
 
 // Create Category
 const createCategory = async (
@@ -80,15 +83,19 @@ const getCategory = async (
 
 // Get Single Category
 const getSingleCategory = async (id: string): Promise<ICategory | null> => {
-    const category = await Category.findById(id, {
-        vendor: 0,
-        admin: 0,
-    }).lean();
+    const category = await Category.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(id),
+            },
+        },
+        ...singleCategoryQuery,
+    ]);
 
     if (!category)
         throw new ApiError(httpStatus.NOT_FOUND, 'Category not Found!');
 
-    return category;
+    return category[0];
 };
 
 // Add sub Category

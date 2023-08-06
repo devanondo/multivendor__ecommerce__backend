@@ -18,6 +18,7 @@ export type IProduct = {
     features?: string;
     rating?: number;
     brand?: string;
+    total_sold_price: number;
     reviews: Types.ObjectId[];
     shop: string;
 };
