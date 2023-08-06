@@ -134,8 +134,8 @@ const createReview = async (review: IReviews): Promise<IReviews | null> => {
         product.reviews.push(newReview._id);
         shop.shop_review.push(newReview._id);
 
-        product.rating = average;
-        shop.shop_rating = shopAveRating;
+        product.rating = Number(parseFloat(average).toFixed(1));
+        shop.shop_rating = Number(parseFloat(shopAveRating).toFixed(1));
 
         await product?.save();
         await shop?.save();

@@ -115,6 +115,10 @@ export const productFilterEndpoints = [
             brand: { $first: '$brand' },
             reviews: { $push: '$reviews' },
             shop: { $first: '$shop' },
+            sold: { $first: '$sold' },
+            total_sold_price: { $first: '$total_sold_price' },
+            createdAt: { $first: '$createdAt' },
+            updatedAt: { $first: '$updatedAt' },
         },
     },
     {
@@ -206,6 +210,10 @@ export const allProductFilterEndpoints = [
             brand: { $first: '$brand' },
             reviews: { $push: '$reviews' },
             shop: { $first: '$shop' },
+            sold: { $first: '$sold' },
+            total_sold_price: { $first: '$total_sold_price' },
+            createdAt: { $first: '$createdAt' },
+            updatedAt: { $first: '$updatedAt' },
         },
     },
     {
