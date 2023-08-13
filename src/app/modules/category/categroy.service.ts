@@ -127,17 +127,18 @@ const addSubCategory = async (
 };
 
 // Approve | Suspend Category status by --> Super Admin & Admin
-const approveCategory = async (id: string): Promise<ICategory | null> => {
+const changeCategoryStatus = async (
+    id: string,
+    status: string | undefined
+): Promise<ICategory | null> => {
     const category = await Category.findById(id, { active_status: 1 }).lean();
 
     if (!category)
         throw new ApiError(httpStatus.NOT_FOUND, 'Category not found!');
 
-    const status = !category?.active_status;
-
     const updatedCategory = await Category.findOneAndUpdate(
         { _id: id },
-        { $set: { active_status: status } },
+        { $set: { active_status: status || 'pending' } },
         { new: true }
     );
 
@@ -148,21 +149,24 @@ const approveCategory = async (id: string): Promise<ICategory | null> => {
 };
 
 // Approve | Suspend Sub Category status by --> Super Admin & Admin
-const approveSubCategory = async (id: string): Promise<ICategory | null> => {
-    const category = await Category.aggregate([
-        { $unwind: '$sub_category' },
-        { $match: { 'sub_category._id': new mongoose.Types.ObjectId(id) } },
-        {
-            $project: {
-                active_status: '$sub_category.active_status',
-            },
-        },
-    ]);
+const changeSubCategoryStatus = async (
+    id: string,
+    status: string
+): Promise<ICategory | null> => {
+    // const category = await Category.aggregate([
+    //     { $unwind: '$sub_category' },
+    //     { $match: { 'sub_category._id': new mongoose.Types.ObjectId(id) } },
+    //     {
+    //         $project: {
+    //             active_status: '$sub_category.active_status',
+    //         },
+    //     },
+    // ]);
 
-    if (!category)
-        throw new ApiError(httpStatus.NOT_FOUND, 'Category not found!');
+    // if (!category)
+    //     throw new ApiError(httpStatus.NOT_FOUND, 'Category not found!');
 
-    const status = !category[0]?.active_status;
+    // const status = !category[0]?.active_status;
 
     const updatedCategory = await Category.findOneAndUpdate(
         { 'sub_category._id': id },
@@ -186,6 +190,6 @@ export const CategoryService = {
     getCategory,
     getSingleCategory,
     addSubCategory,
-    approveCategory,
-    approveSubCategory,
+    changeCategoryStatus,
+    changeSubCategoryStatus,
 };

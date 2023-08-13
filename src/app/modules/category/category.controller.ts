@@ -80,11 +80,12 @@ const addSubCategory: RequestHandler = catchAsync(
 );
 
 // Approve | Suspend Category status
-const approveCategory: RequestHandler = catchAsync(
+const changeCategoryStatus: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const id = req.params.id;
+        const status = req.query.status as string;
 
-        const result = await CategoryService.approveCategory(id);
+        const result = await CategoryService.changeCategoryStatus(id, status);
 
         sendResponse<ICategory>(res, {
             statusCode: httpStatus.OK,
@@ -96,16 +97,20 @@ const approveCategory: RequestHandler = catchAsync(
 );
 
 // Approve | Suspend Sub Category status
-const approveSubCategory: RequestHandler = catchAsync(
+const changeSubCategoryStatus: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const id = req.params.id;
+        const status = req.query.sub_status as string;
 
-        const result = await CategoryService.approveSubCategory(id);
+        const result = await CategoryService.changeSubCategoryStatus(
+            id,
+            status
+        );
 
         sendResponse<ICategory>(res, {
             statusCode: httpStatus.OK,
             success: true,
-            message: 'Category Updated',
+            message: 'Sub Category Updated',
             data: result,
         });
     }
@@ -116,6 +121,6 @@ export const CategoryController = {
     getCategory,
     getSingleCategory,
     addSubCategory,
-    approveCategory,
-    approveSubCategory,
+    changeCategoryStatus,
+    changeSubCategoryStatus,
 };

@@ -7,21 +7,18 @@ import bodyParser from 'body-parser';
 
 const app: Application = express();
 
-//Parser
-app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({ extended: true, limit: '5mb' }));
-app.use(
-    cors({
-        origin: '*',
-    })
-);
-app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' })); // Adjust the limit as needed
-
 // Cloudinary
 cloudinary.v2.config({
     secure: true,
 });
+
+//Parser
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' })); // Adjust the limit as needed
+
+app.use(cors());
 
 // Application routes
 app.use('/api/v1', routes);

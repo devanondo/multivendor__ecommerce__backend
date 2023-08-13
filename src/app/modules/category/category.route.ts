@@ -27,9 +27,15 @@ router
 
 router
     .route('/active_status/:id')
-    .patch(auth('admin', 'superadmin'), CategoryController.approveCategory);
+    .patch(
+        auth('admin', 'superadmin'),
+        CategoryController.changeCategoryStatus
+    );
 router
     .route('/sub_active_status/:id')
-    .patch(auth('admin', 'superadmin'), CategoryController.approveSubCategory);
+    .patch(
+        auth('admin', 'superadmin'),
+        CategoryController.changeSubCategoryStatus
+    );
 
 export const CategoryRoutes = router;
