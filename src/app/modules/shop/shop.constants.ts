@@ -71,14 +71,7 @@ export const shopFilterEndpoints = [
             preserveNullAndEmptyArrays: true,
         }, // Unwind the "reviews.author" array
     },
-    {
-        $lookup: {
-            from: 'customers', // Assuming "reviews" is the name of the collection containing reviews
-            localField: 'shop_review.author.customer',
-            foreignField: '_id',
-            as: 'shop_review.author.userDetails',
-        },
-    },
+
     {
         $group: {
             _id: '$_id',
@@ -92,6 +85,7 @@ export const shopFilterEndpoints = [
             shop_rating: { $first: '$shop_rating' },
             shop_review: { $push: '$shop_review' },
             shop_owner: { $first: '$shop_owner' },
+            createdAt: { $first: '$createdAt' },
         },
     },
     {
