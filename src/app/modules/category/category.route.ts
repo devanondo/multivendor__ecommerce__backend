@@ -15,7 +15,10 @@ router
     )
     .get(CategoryController.getCategory);
 
-router.route('/:id').get(CategoryController.getSingleCategory);
+router
+    .route('/:id')
+    .get(CategoryController.getSingleCategory)
+    .patch(auth('admin', 'superadmin'), CategoryController.updateCategory);
 
 router
     .route('/sub_category/:id')

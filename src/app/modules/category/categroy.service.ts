@@ -181,6 +181,21 @@ const changeSubCategoryStatus = async (
 };
 
 //Update category --> It will implement after the create product
+const updateCategory = async (
+    id: string,
+    category: ICategory
+): Promise<ICategory | null> => {
+    const updatedCategory = await Category.findOneAndUpdate(
+        { _id: id },
+        { $set: category },
+        { new: true }
+    );
+
+    if (!updatedCategory)
+        new ApiError(httpStatus.FORBIDDEN, 'Faild to update!');
+
+    return updatedCategory;
+};
 //Update sub category --> It will implement after the create product
 //Update delete category --> It will implement after the create product
 //Update delete sub category --> It will implement after the create product
@@ -192,4 +207,5 @@ export const CategoryService = {
     addSubCategory,
     changeCategoryStatus,
     changeSubCategoryStatus,
+    updateCategory,
 };

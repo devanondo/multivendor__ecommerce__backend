@@ -21,3 +21,12 @@ export const uploadImage = async (folder: string, photo: any) => {
         throw new ApiError(httpStatus.FORBIDDEN, 'Cloudinary Error');
     }
 };
+
+export const deleteImage = async (public_id: string) => {
+    try {
+        // Upload the image
+        await cloudinary.uploader.destroy(public_id);
+    } catch (error) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'Cloudinary Error');
+    }
+};

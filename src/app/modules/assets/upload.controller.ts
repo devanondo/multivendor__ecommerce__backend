@@ -12,7 +12,7 @@ const uploadImages: RequestHandler = catchAsync(
 
         const result = await UploadService.uploadImages(image, path);
 
-        sendResponse<IImage>(res, {
+        sendResponse<IImage[]>(res, {
             statusCode: httpStatus.OK,
             success: true,
             message: 'Upload successfully!',
@@ -20,7 +20,22 @@ const uploadImages: RequestHandler = catchAsync(
         });
     }
 );
+const deleteImages: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const images = req.body;
+
+        const result = await UploadService.deleteImages(images);
+
+        sendResponse<IImage[]>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Deleted successfully!',
+            data: result,
+        });
+    }
+);
 
 export const UploadController = {
     uploadImages,
+    deleteImages,
 };

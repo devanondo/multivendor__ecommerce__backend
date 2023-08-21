@@ -13,10 +13,10 @@ cloudinary.v2.config({
 });
 
 //Parser
-app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({ extended: true, limit: '5mb' }));
-app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' })); // Adjust the limit as needed
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' })); // Adjust the limit as needed
 
 app.use(cors());
 

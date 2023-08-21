@@ -116,6 +116,21 @@ const changeSubCategoryStatus: RequestHandler = catchAsync(
     }
 );
 
+const updateCategory: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const result = await CategoryService.updateCategory(id, req.body);
+
+        sendResponse<ICategory>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Sub Category Updated',
+            data: result,
+        });
+    }
+);
+
 export const CategoryController = {
     createCategory,
     getCategory,
@@ -123,4 +138,5 @@ export const CategoryController = {
     addSubCategory,
     changeCategoryStatus,
     changeSubCategoryStatus,
+    updateCategory,
 };
