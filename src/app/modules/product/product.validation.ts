@@ -13,7 +13,7 @@ const createProductZodSchema = z.object({
         price: z.number({
             required_error: 'Product Price required',
         }),
-        stocked: z.string({
+        stocked: z.number({
             required_error: 'Product stock required',
         }),
         description: z.string({

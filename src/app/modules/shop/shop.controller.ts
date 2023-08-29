@@ -77,9 +77,26 @@ const updateSingleShop: RequestHandler = catchAsync(
     }
 );
 
+// Get vendor shop
+const getVendorShop: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const result = await ShopService.getVendorShop(id);
+
+        sendResponse<Partial<IShop[]>>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Shop retived Successfully',
+            data: result,
+        });
+    }
+);
+
 export const ShopController = {
     createShop,
     getShops,
     getSingleShop,
     updateSingleShop,
+    getVendorShop,
 };

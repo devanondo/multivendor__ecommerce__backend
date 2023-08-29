@@ -121,9 +121,20 @@ const updateSingleShop = async (
     return newShopData;
 };
 
+// Get vendor shops
+const getVendorShop = async (id: string): Promise<Partial<IShop[] | null>> => {
+    const shops = await Shop.find(
+        { shop_owner: id, active_status: 'public' },
+        { shop_name: 1 }
+    );
+
+    return shops;
+};
+
 export const ShopService = {
     createShop,
     getShops,
     getSingleShops,
     updateSingleShop,
+    getVendorShop,
 };

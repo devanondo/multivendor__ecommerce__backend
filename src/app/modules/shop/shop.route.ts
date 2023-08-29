@@ -32,4 +32,6 @@ router
         ShopController.updateSingleShop
     ); // Only accessed by the admin | superadmin
 
+router.route('/vendor/:id').get(auth('vendor'), ShopController.getVendorShop);
+
 export const ShopRoutes = router;
