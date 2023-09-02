@@ -11,6 +11,7 @@ export type IProduct = {
     sub_category?: string;
     visibility: 'public' | 'private' | 'protected' | 'restricted';
     description?: string;
+    short_description?: string;
     variations?: string[];
     product_image: IImage[];
     weight?: number;
@@ -21,6 +22,7 @@ export type IProduct = {
     total_sold_price: number;
     reviews: Types.ObjectId[];
     shop: string;
+    size?: string[];
 };
 
 export type ProductModel = Model<IProduct, Record<string, unknown>>;

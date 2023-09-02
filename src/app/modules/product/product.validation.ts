@@ -19,7 +19,11 @@ const createProductZodSchema = z.object({
         description: z.string({
             required_error: 'Product description required',
         }),
+        short_description: z.string({
+            required_error: 'Product short description required',
+        }),
         variations: z.array(z.string().optional()),
+        size: z.array(z.string().optional()),
         weight: z.number().optional(),
         diamention: z.string().optional(),
         features: z.string().optional(),

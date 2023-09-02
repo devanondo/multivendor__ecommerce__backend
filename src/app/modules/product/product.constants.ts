@@ -86,14 +86,14 @@ export const productFilterEndpoints = [
             preserveNullAndEmptyArrays: true,
         }, // Unwind the "reviews.author" array
     },
-    {
-        $lookup: {
-            from: 'customers', // Assuming "reviews" is the name of the collection containing reviews
-            localField: 'reviews.author.customer',
-            foreignField: '_id',
-            as: 'reviews.author.userDetails',
-        },
-    },
+    // {
+    //     $lookup: {
+    //         from: 'customers', // Assuming "reviews" is the name of the collection containing reviews
+    //         localField: 'reviews.author.customer',
+    //         foreignField: '_id',
+    //         as: 'reviews.author.userDetails',
+    //     },
+    // },
 
     {
         $group: {
@@ -181,14 +181,14 @@ export const allProductFilterEndpoints = [
             preserveNullAndEmptyArrays: true,
         }, // Unwind the "reviews.author" array
     },
-    {
-        $lookup: {
-            from: 'customers', // Assuming "reviews" is the name of the collection containing reviews
-            localField: 'reviews.author.customer',
-            foreignField: '_id',
-            as: 'reviews.author.userDetails',
-        },
-    },
+    // {
+    //     $lookup: {
+    //         from: 'customers', // Assuming "reviews" is the name of the collection containing reviews
+    //         localField: 'reviews.author.customer',
+    //         foreignField: '_id',
+    //         as: 'reviews.author.userDetails',
+    //     },
+    // },
 
     {
         $group: {
@@ -201,6 +201,7 @@ export const allProductFilterEndpoints = [
             sub_category: { $first: '$sub_category' },
             visibility: { $first: '$visibility' },
             description: { $first: '$description' },
+            short_description: { $first: '$short_description' },
             variations: { $first: '$variations' },
             product_image: { $first: '$product_image' },
             weight: { $first: '$weight' },
@@ -210,6 +211,7 @@ export const allProductFilterEndpoints = [
             brand: { $first: '$brand' },
             reviews: { $push: '$reviews' },
             shop: { $first: '$shop' },
+            size: { $first: '$size' },
             sold: { $first: '$sold' },
             total_sold_price: { $first: '$total_sold_price' },
             createdAt: { $first: '$createdAt' },
