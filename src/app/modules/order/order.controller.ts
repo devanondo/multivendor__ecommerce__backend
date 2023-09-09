@@ -13,7 +13,6 @@ import { OrderService } from './order.service';
 const createOrder: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const order = req.body;
-        console.log(req.body);
 
         const result = await OrderService.createOrder(order);
 

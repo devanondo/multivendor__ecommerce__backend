@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
+import { IImage } from '../../../interfaces/commong.interface';
 
 export type IUser = {
     userid: string;
@@ -10,10 +11,15 @@ export type IUser = {
     vendor?: Types.ObjectId;
     admin?: Types.ObjectId;
     super_admin?: Types.ObjectId;
+
+    email: string;
     name?: {
         first_name?: string;
         last_name?: string;
     };
+    address?: string;
+    profile_picture?: IImage;
+
     _id?: Types.ObjectId;
     file?: string;
 };

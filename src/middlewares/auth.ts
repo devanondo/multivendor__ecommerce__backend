@@ -30,9 +30,7 @@ export const auth = (...roles: string[]): RequestHandler =>
         req.user = decodedData;
 
         if (roles.length && !roles.includes(decodedData.role))
-            return next(
-                new ApiError(httpStatus.FORBIDDEN, 'Authorization Invalid2')
-            );
+            return next(new ApiError(httpStatus.FORBIDDEN, 'Access Denied'));
 
         next();
     });

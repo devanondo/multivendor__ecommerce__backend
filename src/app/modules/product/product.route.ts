@@ -34,6 +34,13 @@ router // Only for admin | superadmin
         ProductController.updateProductVisibility
     );
 
+router
+    .route('/vendor/:id')
+    .get(
+        auth('admin', 'superadmin', 'vendor'),
+        ProductController.getVendorProducts
+    );
+
 router // Only for admin | superadmin
     .route('/admin/product_visibility/:id')
     .patch(

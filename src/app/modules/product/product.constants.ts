@@ -222,7 +222,7 @@ export const allProductFilterEndpoints = [
         $project: {
             'shop._id': 0,
             'shop.shop_review': 0,
-            'shop.shop_owner': 0,
+            // 'shop.shop_owner': 0,
             'shop.shop_banner': 0,
             'reviews.author.password': 0,
         },

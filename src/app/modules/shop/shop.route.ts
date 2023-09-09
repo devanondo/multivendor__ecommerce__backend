@@ -13,7 +13,9 @@ router
         validateData(ShopZodValidation.createShopZodSchema),
         ShopController.createShop
     )
-    .get(ShopController.getShops);
+    .get(auth('admin', 'superadmin'), ShopController.getShops);
+
+router.route('/own').get(auth('vendor'), ShopController.getVendorShops);
 
 router
     .route('/:id')
@@ -25,9 +27,9 @@ router
     ); // Update Single shop by --> admin | superadmin | vendor
 
 router
-    .route('/active_staus/:id')
+    .route('/active_status/:id')
     .patch(
-        auth('admin', 'superadmin'),
+        auth('admin', 'superadmin', 'vendor'),
         validateData(ShopZodValidation.updateShopActiveStatusZodSchema),
         ShopController.updateSingleShop
     ); // Only accessed by the admin | superadmin

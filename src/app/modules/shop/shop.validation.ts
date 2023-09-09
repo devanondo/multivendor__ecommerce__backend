@@ -12,6 +12,18 @@ const createShopZodSchema = z.object({
         shop_type: z.string({
             required_error: 'Shop Type required',
         }),
+        shop_email: z
+            .string({
+                required_error: 'Shop Email required',
+            })
+            .email(),
+        shop_address: z.string({
+            required_error: 'Shop Address required',
+        }),
+        shop_phone: z.string({
+            required_error: 'Shop Phone required',
+        }),
+        shop_website: z.string().optional(),
     }),
 });
 
@@ -24,6 +36,10 @@ const updateShopZodSchema = z.object({
             active_status: z
                 .enum([...visibility] as [string, ...string[]])
                 .optional(),
+            shop_email: z.string().email().optional(),
+            shop_address: z.string().optional(),
+            shop_phone: z.string().optional(),
+            shop_website: z.string().optional(),
         })
         .refine((obj) => !('active_status' in obj), {
             message: "The 'active_status' is not allowed.",

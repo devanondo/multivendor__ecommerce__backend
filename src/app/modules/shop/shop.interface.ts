@@ -12,6 +12,11 @@ export type IShop = {
     shop_rating?: number;
     shop_review: Types.ObjectId[];
     shop_owner: string;
+
+    shop_email?: string;
+    shop_website?: string;
+    shop_address?: string;
+    shop_phone?: string;
 };
 
 export type ShopModel = Model<IShop, Record<string, unknown>>;

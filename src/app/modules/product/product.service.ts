@@ -141,6 +141,61 @@ const getAllProducts = async (
     };
 };
 
+// Get all Products --> vendor
+const getVendorProducts = async (
+    filters: IProductFilter,
+    pagination: IPaginationOptions,
+    id: string
+): Promise<IGenericResponse<IProduct[]>> => {
+    const { page, limit, skip, sortBy, sortOrder } =
+        paginationHelpers.calculatePagination(pagination);
+
+    const { searchTerm, ...filtersData } = filters;
+
+    const sortConditions: { [key: string]: SortOrder } = {};
+
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions = filterConditions(
+        searchTerm,
+        productFilterableFields,
+        filtersData
+    );
+    const sortValue = sortOrder === 'ascending' || sortOrder === 'asc' ? 1 : -1;
+
+    const total = await Product.aggregate([{ $match: whereConditions }]);
+
+    const products = await Product.aggregate([
+        ...allProductFilterEndpoints,
+        {
+            $match: { 'shop.shop_owner': id },
+        },
+        { $match: whereConditions },
+        {
+            $sort: {
+                [sortBy]: sortValue,
+            },
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+    ]);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total: total.length,
+        },
+        data: products,
+    };
+};
+
 // Get Single product
 const getSingleProducts = async (id: string): Promise<IProduct | null> => {
     const product = await Product.aggregate([
@@ -245,6 +300,7 @@ export const ProductService = {
     createProduct,
     getProducts,
     getAllProducts,
+    getVendorProducts,
     getSingleProducts,
     getShopProducts,
     updateSingleProducts,

@@ -48,6 +48,29 @@ const getAllProducts: RequestHandler = catchAsync(
         });
     }
 );
+// Get all Products with paginations --> Only for the Admin & SuperAdmin
+const getVendorProducts: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const filters = pick(req.query, productSearchableFields);
+        const id: string = req.params.id;
+
+        const paginationOptions = pick(req.query, paginationQueryOptions);
+
+        const result = await ProductService.getVendorProducts(
+            filters,
+            paginationOptions,
+            id
+        );
+
+        sendResponse<IProduct[]>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Products Retrived Successfully',
+            meta: result.meta,
+            data: result.data,
+        });
+    }
+);
 
 // Get all prducts
 const getProducts: RequestHandler = catchAsync(
@@ -152,4 +175,5 @@ export const ProductController = {
     getShopProducts,
     updateSingleProducts,
     updateProductVisibility,
+    getVendorProducts,
 };

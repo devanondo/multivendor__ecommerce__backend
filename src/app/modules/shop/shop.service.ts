@@ -17,9 +17,6 @@ const createShop = async (shop: Partial<IShop>): Promise<IShop | null> => {
 
     shop.shop_id = shopid;
 
-    // Shop Logo implement later
-    // Shop Banner implement later
-
     const newShopData = await Shop.create(shop);
 
     if (!newShopData)
@@ -86,6 +83,25 @@ const getShops = async (
         data: shops,
     };
 };
+const getVendorShops = async (
+    id: string
+): Promise<IGenericResponse<IShop[]>> => {
+    const shops = await Shop.aggregate([
+        {
+            $match: { shop_owner: id },
+        },
+        ...shopFilterEndpoints,
+    ]);
+
+    return {
+        meta: {
+            page: 1,
+            limit: shops.length,
+            total: shops.length,
+        },
+        data: shops,
+    };
+};
 
 // Get single shop with products
 const getSingleShops = async (id: string): Promise<IShop> => {
@@ -137,4 +153,5 @@ export const ShopService = {
     getSingleShops,
     updateSingleShop,
     getVendorShop,
+    getVendorShops,
 };

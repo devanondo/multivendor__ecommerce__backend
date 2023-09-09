@@ -46,6 +46,10 @@ const ShopSchema = new Schema<IShop>(
             type: String,
             required: true,
         },
+        shop_email: { type: String, required: true },
+        shop_website: String,
+        shop_address: String,
+        shop_phone: { type: String, required: true },
     },
     {
         timestamps: true,

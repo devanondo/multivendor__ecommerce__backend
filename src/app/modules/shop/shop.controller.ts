@@ -12,7 +12,9 @@ import { ShopService } from './shop.service';
 const createShop: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
         const shop = req.body;
-        shop.shop_owner = req?.user?.userid;
+        if (!shop.shop_owner) {
+            shop.shop_owner = req?.user?.userid;
+        }
 
         const result = await ShopService.createShop(shop);
 
@@ -33,6 +35,22 @@ const getShops: RequestHandler = catchAsync(
         const paginationOptions = pick(req.query, paginationQueryOptions);
 
         const result = await ShopService.getShops(filters, paginationOptions);
+
+        sendResponse<IShop[]>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Shops Retrived Successfully',
+            meta: result.meta,
+            data: result.data,
+        });
+    }
+);
+// Get all Shops with paginations --> Only for the Vendor
+const getVendorShops: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req?.user?.userid;
+
+        const result = await ShopService.getVendorShops(id);
 
         sendResponse<IShop[]>(res, {
             statusCode: httpStatus.OK,
@@ -99,4 +117,5 @@ export const ShopController = {
     getSingleShop,
     updateSingleShop,
     getVendorShop,
+    getVendorShops,
 };
