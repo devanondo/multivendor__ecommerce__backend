@@ -16,6 +16,32 @@ const CustomerSchema = new Schema<ICustomer>(
             public_id: String,
             url: String,
         },
+        wishlist: [
+            {
+                type: Object,
+            },
+        ],
+        addresses: [
+            {
+                status: {
+                    type: String,
+                    enum: ['active', 'inactive'],
+                    default: 'inactive',
+                },
+                address: {
+                    first_name: String,
+                    last_name: String,
+                    email: String,
+                    phone: String,
+                    holding_no: String,
+                    street: String,
+                    area: String,
+                    distict: String,
+                    country: String,
+                    zip: String,
+                },
+            },
+        ],
     },
     {
         timestamps: true,

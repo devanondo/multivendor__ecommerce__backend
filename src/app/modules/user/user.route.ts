@@ -6,16 +6,6 @@ import { auth } from '../../../middlewares/auth';
 
 const router = Router();
 
-// Action with single --> id
-router
-    .route('/:id')
-    .get(auth(), UserController.getSingleUsers)
-    .patch(
-        auth(),
-        validateData(UserZodValidation.updateUserZodSchema),
-        UserController.updateUser
-    );
-
 // Action --> User Profile
 // router.route('/me')
 
@@ -35,6 +25,43 @@ router
         auth('superadmin'),
         validateData(UserZodValidation.createAdminZodSchema),
         UserController.createAdmin
+    );
+
+// Add address Admin | superadmin | customer
+router
+    .route('/address/:id')
+    .post(
+        // Add address
+        auth('superadmin', 'admin', 'customer'),
+        UserController.addCustomerAddress
+    )
+    .patch(
+        // Update Address
+        auth('superadmin', 'admin', 'customer'),
+        UserController.updateCustomerAddress
+    )
+    .delete(
+        // Delete Address
+        auth('superadmin', 'admin', 'customer'),
+        UserController.deleteCustomerAddress
+    );
+// User can be change the address active status
+
+router
+    .route('/address/status/:id')
+    .patch(
+        auth('superadmin', 'admin', 'customer'),
+        UserController.updateCustomerAddressStatus
+    );
+
+// Action with single --> id
+router
+    .route('/:id')
+    .get(auth(), UserController.getSingleUsers)
+    .patch(
+        auth(),
+        validateData(UserZodValidation.updateUserZodSchema),
+        UserController.updateUser
     );
 
 export const UserRoutes = router;

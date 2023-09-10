@@ -1,20 +1,21 @@
 import httpStatus from 'http-status';
 import mongoose, { SortOrder } from 'mongoose';
 import ApiError from '../../../error/ApiError';
+import { uploadImage } from '../../../helpers/imageUploader';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/commong.interface';
 import { IPaginationOptions } from '../../../shared/paginationOptions';
 import { IAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
-import { ICustomer } from '../customer/customer.interface';
+import { IAddress, ICustomer } from '../customer/customer.interface';
 import { Customer } from '../customer/customer.model';
 import { IVendor } from '../vendor/vendor.interface';
 import { Vendor } from '../vendor/vendor.model';
+import { IAddresses } from './../customer/customer.interface';
 import { userFilterEndpoints, userFilterableFields } from './user.constants';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
 import { generateUserId } from './user.utils';
-import { uploadImage } from '../../../helpers/imageUploader';
 
 // Create user | Register User
 const createUser = async (user: IUser): Promise<IUser | null> => {
@@ -298,10 +299,127 @@ const updateUser = async (
 
     return updateUser;
 };
+
+// Add customer address by (customer | admin | superadmin)
+const addCustomerAddress = async (
+    id: string,
+    payload: IAddresses
+): Promise<null> => {
+    const user = await User.findOne({ userid: id });
+
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found!');
+
+    const customer = await Customer.findOne({ _id: user.customer });
+    if (!customer) throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found!');
+
+    customer.addresses?.push(payload);
+
+    await customer.save();
+
+    return null;
+};
+
+// Update customer address by (customer | admin | superadmin)
+const updateCustomerAddress = async (
+    id: string,
+    payload: {
+        address_id: string;
+        address: IAddress;
+    }
+): Promise<null> => {
+    const customer = await Customer.findOne({ _id: id });
+    if (!customer) throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found!');
+
+    const isExistAddress = customer.addresses?.find(
+        (cus: IAddresses) =>
+            cus._id?.toString() === payload.address_id.toString()
+    );
+
+    if (!isExistAddress)
+        throw new ApiError(httpStatus.NOT_FOUND, 'Address Not Found!');
+
+    const newAddresses = customer?.addresses?.map((address) => {
+        if (address._id?.toString() === payload.address_id.toString()) {
+            address.address = payload.address;
+
+            return address;
+        } else {
+            return address;
+        }
+    });
+
+    customer.addresses = newAddresses || [];
+
+    await customer.save();
+
+    return null;
+};
+
+// Change customer address status by (customer | admin | superadmin)
+const deleteCustomerAddress = async (
+    id: string,
+    payload: {
+        address_id: string;
+    }
+): Promise<null> => {
+    const customer = await Customer.findOne({ _id: id });
+    if (!customer) throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found!');
+
+    const newAddresses = customer.addresses?.filter(
+        (cus: IAddresses) =>
+            cus._id?.toString() !== payload.address_id.toString()
+    );
+    customer.addresses = newAddresses;
+
+    await customer.save();
+
+    return null;
+};
+
+// Change customer address status by (customer | admin | superadmin)
+const updateCustomerAddressStatus = async (
+    id: string,
+    payload: {
+        address_id: string;
+    }
+): Promise<null> => {
+    const customer = await Customer.findOne({ _id: id });
+    if (!customer) throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found!');
+
+    const isExistAddress = customer.addresses?.find(
+        (cus: IAddresses) =>
+            cus._id?.toString() === payload.address_id.toString()
+    );
+
+    if (!isExistAddress)
+        throw new ApiError(httpStatus.NOT_FOUND, 'Address Not Found!');
+
+    const newAddresses = customer?.addresses?.map((address) => {
+        if (address._id?.toString() === payload.address_id.toString()) {
+            address.status = 'active';
+
+            return address;
+        } else {
+            address.status = 'inactive';
+            return address;
+        }
+    });
+
+    customer.addresses = newAddresses || [];
+
+    await customer.save();
+
+    return null;
+};
+
 export const UserService = {
     createUser,
     createAdmin,
     getUsers,
     getSingleUsers,
     updateUser,
+    addCustomerAddress,
+    updateCustomerAddress,
+    deleteCustomerAddress,
+    updateCustomerAddressStatus,
 };

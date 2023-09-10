@@ -100,10 +100,85 @@ const updateUser: RequestHandler = catchAsync(
     }
 );
 
+// Add customer address by (customer | admin | superadmin)
+const addCustomerAddress: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body;
+
+        const result = await UserService.addCustomerAddress(id, payload);
+
+        sendResponse<IUser>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Address added Successfully',
+            data: result,
+        });
+    }
+);
+
+// Update customer address by (customer | admin | superadmin)
+const updateCustomerAddress: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body;
+
+        const result = await UserService.updateCustomerAddress(id, payload);
+
+        sendResponse<IUser>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Address Updated Successfully',
+            data: result,
+        });
+    }
+);
+
+// Delte customer address by (customer | admin | superadmin)
+const deleteCustomerAddress: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body;
+
+        const result = await UserService.deleteCustomerAddress(id, payload);
+
+        sendResponse<IUser>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Address Deleted Successfully',
+            data: result,
+        });
+    }
+);
+
+// Update customer address status by (customer | admin | superadmin)
+const updateCustomerAddressStatus: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body;
+
+        const result = await UserService.updateCustomerAddressStatus(
+            id,
+            payload
+        );
+
+        sendResponse<IUser>(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Address Updated Successfully',
+            data: result,
+        });
+    }
+);
+
 export const UserController = {
     createUser,
     createAdmin,
     updateUser,
     getSingleUsers,
     getUsers,
+    addCustomerAddress,
+    updateCustomerAddress,
+    deleteCustomerAddress,
+    updateCustomerAddressStatus,
 };
